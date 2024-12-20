@@ -1,0 +1,56 @@
+services:
+  nats_server:
+    container_name: nats_server
+    image: nats
+    restart: always
+    ports:
+      - 8222:8222
+
+  client_gateway:
+    container_name: client_gateway
+    build: ./client_gateway
+    restart: always
+    ports:
+      - 3333:3333
+    volumes:
+      - ./client_gateway/src:/usr/src/app/src
+    command: pnpm start:dev
+    env_file:
+      - ./client_gateway/.env
+
+  products_ms:
+    container_name: products_ms
+    build: ./products_ms
+    restart: always
+    command: sh -c "pnpm prisma migrate dev && pnpm start:dev"
+    ports:
+      - 5557:5555
+    volumes:
+      - ./products_ms/src:/usr/src/app/src
+    env_file:
+      - ./products_ms/.env
+
+  orders_ms:
+    container_name: orders_ms
+    build: ./orders_ms
+    restart: always
+    command: sh -c "pnpm prisma migrate dev && pnpm start:dev"
+    ports:
+      - 5556:5555
+    volumes:
+      - ./orders_ms/src:/usr/src/app/src
+    env_file:
+      - ./orders_ms/.env
+    depends_on:
+      - order_db
+
+  order_db:
+    container_name: orders_db
+    image: postgres:16.2
+    restart: always
+    volumes:
+      - ./orders_ms/postgres:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=orders_db

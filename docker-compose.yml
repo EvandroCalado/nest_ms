@@ -49,3 +49,14 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=orders_db
+
+  payments_ms:
+    container_name: payments_ms
+    build: ./payments_ms
+    command: sh -c "pnpm start:dev"
+    ports:
+      - 3003:3003
+    volumes:
+      - ./payments_ms/src:/usr/src/app/src
+    env_file:
+      - ./payments_ms/.env

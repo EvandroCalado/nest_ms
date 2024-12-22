@@ -7,3 +7,6 @@
 [submodule "orders_ms"]
 	path = orders_ms
 	url = git@github.com:EvandroCalado/orders_ms.git
+[submodule "payments_ms"]
+	path = payments_ms
+	url = git@github.com:EvandroCalado/payments_ms.git

@@ -21,7 +21,7 @@ services:
     build: ./products_ms
     command: sh -c "pnpm prisma migrate deploy && pnpm prisma generate && pnpm start:dev"
     ports:
-      - 5557:5555
+      - 5556:5555
     volumes:
       - ./products_ms/src:/usr/src/app/src
     env_file:
@@ -32,7 +32,7 @@ services:
     build: ./orders_ms
     command: sh -c "pnpm prisma migrate deploy && pnpm prisma generate && pnpm start:dev"
     ports:
-      - 5556:5555
+      - 5557:5555
     volumes:
       - ./orders_ms/src:/usr/src/app/src
     env_file:
@@ -62,3 +62,14 @@ services:
       - ./payments_ms/src:/usr/src/app/src
     env_file:
       - ./payments_ms/.env
+
+  auth_ms:
+    container_name: auth_ms
+    build: ./auth_ms
+    command: sh -c "pnpm start:dev"
+    ports:
+      - 5558:5555
+    volumes:
+      - ./auth_ms/src:/usr/src/app/src
+    env_file:
+      - ./auth_ms/.env

@@ -66,7 +66,7 @@ services:
   auth_ms:
     container_name: auth_ms
     build: ./auth_ms
-    command: sh -c "pnpm start:dev"
+    command: sh -c "pnpm prisma generate && pnpm start:dev"
     ports:
       - 5558:5555
     volumes:
